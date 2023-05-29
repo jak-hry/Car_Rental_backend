@@ -50,11 +50,11 @@ public class RentalController {
         return ResponseEntity.ok(rentalMapper.mapToRentalDto(rental));
     }
 
-    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<RentalDto> updateRental(@RequestBody RentalDto rentalDto) throws RentalNotFoundException {
-        Rental rental = rentalMapper.mapToRental(rentalDto);
-        Rental savedRental = rentalService.saveRental(rental);
-        return ResponseEntity.ok(rentalMapper.mapToRentalDto(savedRental));
+    @PutMapping("/{id}")
+    public ResponseEntity<RentalDto> updateRental(@PathVariable Long id, @RequestBody RentalDto rentalDto) throws RentalNotFoundException {
+        rentalDto.setId(id);
+        RentalDto updatedRental = rentalService.updateRental(rentalDto);
+        return ResponseEntity.ok(updatedRental);
     }
 
     @DeleteMapping(value = "{rentalId}")

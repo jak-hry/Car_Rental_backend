@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -22,25 +23,25 @@ public class Car {
     @Column(name = "ID", unique = true)
     private Long id;
 
-    @Column(name = "BRAND")
+    @Column(name = "BRAND", nullable = false)
     private String brand;
 
-    @Column(name = "MODEL")
+    @Column(name = "MODEL", nullable = false)
     private String model;
 
-    @Column(name = "YEAR")
+    @Column(name = "YEAR", nullable = false)
     private int year;
 
-    @Column(name = "REGISTRATION_NUMBER")
+    @Column(name = "REGISTRATION_NUMBER", nullable = false)
     private String registrationNumber;
 
-    @Column(name = "COLOR")
+    @Column(name = "COLOR", nullable = false)
     private String color;
 
-    @Column(name = "RENTAL_PRICE_PER_DAY")
+    @Column(name = "RENTAL_PRICE_PER_DAY", nullable = false)
     private BigDecimal rentalPricePerDay;
 
-    @Column(name = "AVAILABLE")
+    @Column(name = "AVAILABLE", nullable = false)
     private boolean available;
 
     @OneToMany(mappedBy = "car")

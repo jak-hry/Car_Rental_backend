@@ -15,25 +15,25 @@ public class RentalMapper {
     private final CustomerMapper customerMapper;
 
     public Rental mapToRental(RentalDto rentalDto) {
-        return new Rental(
-                rentalDto.getId(),
-                carMapper.mapToCar(rentalDto.getCar()),
-                customerMapper.mapToCustomer(rentalDto.getCustomer()),
-                rentalDto.getStartDate(),
-                rentalDto.getEndDate(),
-                rentalDto.getTotalCost()
-        );
+        return Rental.builder()
+                .id(rentalDto.getId())
+                .car(carMapper.mapToCar(rentalDto.getCar()))
+                .customer(customerMapper.mapToCustomer(rentalDto.getCustomer()))
+                .startDate(rentalDto.getStartDate())
+                .endDate(rentalDto.getEndDate())
+                .totalCost(rentalDto.getTotalCost())
+                .build();
     }
 
     public RentalDto mapToRentalDto(Rental rental) {
-        return new RentalDto(
-                rental.getId(),
-                carMapper.mapToCarDto(rental.getCar()),
-                customerMapper.mapToCustomerDto(rental.getCustomer()),
-                rental.getStartDate(),
-                rental.getEndDate(),
-                rental.getTotalCost()
-        );
+        return RentalDto.builder()
+                .id(rental.getId())
+                .car(carMapper.mapToCarDto(rental.getCar()))
+                .customer(customerMapper.mapToCustomerDto(rental.getCustomer()))
+                .startDate(rental.getStartDate())
+                .endDate(rental.getEndDate())
+                .totalCost(rental.getTotalCost())
+                .build();
     }
 
     public List<RentalDto> mapToRentalDtoList(List<Rental> rentals) {

@@ -20,13 +20,7 @@ public class CustomerController {
     private final CustomerService customerService;
     private final CustomerMapper customerMapper;
 
-    @GetMapping
-    public ResponseEntity<List<CustomerDto>> getCustomers() {
-        List<Customer> customers = customerService.getCustomerList();
-        return ResponseEntity.ok(customerMapper.mapToCustomerDtoList(customers));
-    }
-
-    @GetMapping(value = "{customerId}")
+    @GetMapping(value = "/{customerId}")
     public ResponseEntity<CustomerDto> getCustomer(@PathVariable Long customerId) throws CustomerNotFoundException {
         return ResponseEntity.ok(customerMapper.mapToCustomerDto(customerService.getCustomerById(customerId)));
     }

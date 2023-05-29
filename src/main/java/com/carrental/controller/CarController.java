@@ -50,11 +50,11 @@ public class CarController {
         return ResponseEntity.ok(carMapper.mapToCarDto(car));
     }
 
-    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CarDto> updateCar(@RequestBody CarDto carDto) throws CarNotFoundException {
-        Car car = carMapper.mapToCar(carDto);
-        Car savedCar = carService.saveCar(car);
-        return ResponseEntity.ok(carMapper.mapToCarDto(savedCar));
+    @PutMapping("/{id}")
+    public ResponseEntity<CarDto> updateCar(@PathVariable Long id, @RequestBody CarDto carDto) throws CarNotFoundException {
+        carDto.setId(id);
+        CarDto updatedCar = carService.updateCar(carDto);
+        return ResponseEntity.ok(updatedCar);
     }
 
     @DeleteMapping(value = "{carId}")

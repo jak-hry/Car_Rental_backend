@@ -13,10 +13,6 @@ import java.util.List;
 public class CustomerService {
     private final CustomerRepository customerRepository;
 
-    public List<Customer> getCustomerList() {
-        return customerRepository.findAll();
-    }
-
     public Customer getCustomerById(Long customerId) throws CustomerNotFoundException {
         return customerRepository.findById(customerId).orElseThrow(CustomerNotFoundException::new);
     }

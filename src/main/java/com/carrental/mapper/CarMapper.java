@@ -11,29 +11,29 @@ import java.util.stream.Collectors;
 public class CarMapper {
 
     public Car mapToCar(CarDto carDto) {
-        return new Car(
-                carDto.getId(),
-                carDto.getBrand(),
-                carDto.getModel(),
-                carDto.getYear(),
-                carDto.getRegistrationNumber(),
-                carDto.getColor(),
-                carDto.getRentalPricePerDay(),
-                carDto.isAvailable()
-        );
+        return Car.builder()
+                .id(carDto.getId())
+                .brand(carDto.getBrand())
+                .model(carDto.getModel())
+                .year(carDto.getYear())
+                .registrationNumber(carDto.getRegistrationNumber())
+                .color(carDto.getColor())
+                .rentalPricePerDay(carDto.getRentalPricePerDay())
+                .available(carDto.isAvailable())
+                .build();
     }
 
     public CarDto mapToCarDto(Car car) {
-        return new CarDto(
-                car.getId(),
-                car.getBrand(),
-                car.getModel(),
-                car.getYear(),
-                car.getRegistrationNumber(),
-                car.getColor(),
-                car.getRentalPricePerDay(),
-                car.isAvailable()
-        );
+        return CarDto.builder()
+                .id(car.getId())
+                .brand(car.getBrand())
+                .model(car.getModel())
+                .year(car.getYear())
+                .registrationNumber(car.getRegistrationNumber())
+                .color(car.getColor())
+                .rentalPricePerDay(car.getRentalPricePerDay())
+                .available(car.isAvailable())
+                .build();
     }
 
     public List<CarDto> mapToCarDtoList(List<Car> cars) {

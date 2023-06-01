@@ -14,11 +14,6 @@ import java.util.List;
 @Builder
 public class CarDto {
     private Long id;
-    private String brand;
     private String model;
-    private int year;
-    private String registrationNumber;
-    private String color;
-    private BigDecimal rentalPricePerDay;
     private boolean available;
 }

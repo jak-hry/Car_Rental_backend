@@ -1,11 +1,13 @@
 package com.carrental.controller;
 
+import com.carrental.carApi.client.CarApiClient;
 import com.carrental.controller.exceptions.CarNotFoundException;
 import com.carrental.domain.Car;
 import com.carrental.domain.dto.CarDto;
 import com.carrental.mapper.CarMapper;
 import com.carrental.service.CarService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,11 +21,18 @@ public class CarController {
 
     private final CarService carService;
     private final CarMapper carMapper;
+    private final CarApiClient carApiClient;
 
     @GetMapping
     public ResponseEntity<List<CarDto>> getCars() {
-        List<Car> cars = carService.getCarList();
-        return ResponseEntity.ok(carMapper.mapToCarDtoList(cars));
+        try {
+            String data = carApiClient.fetchDataFromAPI();
+            List<Car> cars = carApiClient.processData(data);
+            return ResponseEntity.ok(carMapper.mapToCarDtoList(cars));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @GetMapping(value = "{carId}")
@@ -31,23 +40,21 @@ public class CarController {
         return ResponseEntity.ok(carMapper.mapToCarDto(carService.getCarById(carId)));
     }
 
-    @GetMapping(params = "brand")
-    public ResponseEntity<List<CarDto>> getCarsByBrand(@RequestParam String brand) {
-        List<Car> cars = carService.getCarsByBrand(brand);
-        return ResponseEntity.ok(carMapper.mapToCarDtoList(cars));
-    }
-
     @GetMapping(params = "model")
-    public ResponseEntity<List<CarDto>> getCarsByModel(@RequestParam String model) {
-        List<Car> cars = carService.getCarsByModel(model);
-        return ResponseEntity.ok(carMapper.mapToCarDtoList(cars));
+    public ResponseEntity<CarDto> getCarByModel(@RequestParam String model) throws CarNotFoundException {
+        return ResponseEntity.ok(carMapper.mapToCarDto(carService.getCarByModel(model)));
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CarDto> createCar(@RequestBody CarDto carDto) {
-        Car car = carMapper.mapToCar(carDto);
-        carService.saveCar(car);
-        return ResponseEntity.ok(carMapper.mapToCarDto(car));
+        try {
+            Car car = carMapper.mapToCar(carDto);
+            carService.saveCar(car);
+            return ResponseEntity.ok(carMapper.mapToCarDto(car));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @PutMapping("/{id}")

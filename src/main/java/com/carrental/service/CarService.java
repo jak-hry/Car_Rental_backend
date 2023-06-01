@@ -24,24 +24,15 @@ public class CarService {
         return carRepository.findById(carId).orElseThrow(CarNotFoundException::new);
     }
 
-    public List<Car> getCarsByBrand(String brand) {
-        return carRepository.findByBrand(brand);
-    }
-
-    public List<Car> getCarsByModel(String model) {
-        return carRepository.findByModel(model);
+    public Car getCarByModel(String model) throws CarNotFoundException {
+        return carRepository.findByModel(model).orElseThrow(CarNotFoundException::new);
     }
 
     public CarDto updateCar(CarDto carDto) throws CarNotFoundException {
         Car existingCar = carRepository.findById(carDto.getId())
                 .orElseThrow(CarNotFoundException::new);
 
-        existingCar.setBrand(carDto.getBrand());
         existingCar.setModel(carDto.getModel());
-        existingCar.setYear(carDto.getYear());
-        existingCar.setRegistrationNumber(carDto.getRegistrationNumber());
-        existingCar.setColor(carDto.getColor());
-        existingCar.setRentalPricePerDay(carDto.getRentalPricePerDay());
         existingCar.setAvailable(carDto.isAvailable());
 
         Car updatedCar = carRepository.save(existingCar);
@@ -49,6 +40,7 @@ public class CarService {
     }
 
     public Car saveCar(Car car) {
+        car.setAvailable(true);
         return carRepository.save(car);
     }
 

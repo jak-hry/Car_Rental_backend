@@ -13,12 +13,7 @@ public class CarMapper {
     public Car mapToCar(CarDto carDto) {
         return Car.builder()
                 .id(carDto.getId())
-                .brand(carDto.getBrand())
                 .model(carDto.getModel())
-                .year(carDto.getYear())
-                .registrationNumber(carDto.getRegistrationNumber())
-                .color(carDto.getColor())
-                .rentalPricePerDay(carDto.getRentalPricePerDay())
                 .available(carDto.isAvailable())
                 .build();
     }
@@ -26,12 +21,7 @@ public class CarMapper {
     public CarDto mapToCarDto(Car car) {
         return CarDto.builder()
                 .id(car.getId())
-                .brand(car.getBrand())
                 .model(car.getModel())
-                .year(car.getYear())
-                .registrationNumber(car.getRegistrationNumber())
-                .color(car.getColor())
-                .rentalPricePerDay(car.getRentalPricePerDay())
                 .available(car.isAvailable())
                 .build();
     }

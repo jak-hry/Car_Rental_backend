@@ -22,6 +22,7 @@ public class RentalMapper {
                 .startDate(rentalDto.getStartDate())
                 .endDate(rentalDto.getEndDate())
                 .totalCost(rentalDto.getTotalCost())
+                .rentalDuration(rentalDto.getRentalDuration())
                 .build();
     }
 
@@ -33,6 +34,7 @@ public class RentalMapper {
                 .startDate(rental.getStartDate())
                 .endDate(rental.getEndDate())
                 .totalCost(rental.getTotalCost())
+                .rentalDuration(rental.getRentalDuration())
                 .build();
     }
 

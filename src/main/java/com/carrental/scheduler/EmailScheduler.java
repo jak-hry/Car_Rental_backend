@@ -6,6 +6,7 @@ import com.carrental.scheduler.config.AdminConfig;
 import com.carrental.scheduler.domain.Mail;
 import com.carrental.scheduler.service.SimpleMailService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 @Component

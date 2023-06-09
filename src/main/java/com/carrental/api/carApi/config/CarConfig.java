@@ -1,4 +1,4 @@
-package com.carrental.carApi.config;
+package com.carrental.api.carApi.config;
 
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;

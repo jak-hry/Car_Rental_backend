@@ -1,6 +1,6 @@
-package com.carrental.carApi.client;
+package com.carrental.api.carApi.client;
 
-import com.carrental.carApi.config.CarConfig;
+import com.carrental.api.carApi.config.CarConfig;
 import com.carrental.domain.Car;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONArray;

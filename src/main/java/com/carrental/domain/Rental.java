@@ -8,8 +8,6 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -38,6 +36,7 @@ public class Rental {
     @Column(name = "END_DATE", nullable = false)
     private LocalDateTime endDate;
 
-    @Column(name = "TOTAL_COST")
+    @Column(name = "TOTAL_COST", nullable = false)
     private BigDecimal totalCost;
+    private Integer rentalDuration;
 }

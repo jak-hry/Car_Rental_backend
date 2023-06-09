@@ -1,6 +1,10 @@
 package com.carrental.mapper;
 
+import com.carrental.domain.Car;
+import com.carrental.domain.DamagePenalty;
 import com.carrental.domain.Rental;
+import com.carrental.domain.dto.CarDto;
+import com.carrental.domain.dto.DamagePenaltyDto;
 import com.carrental.domain.dto.RentalDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,6 +17,7 @@ import java.util.stream.Collectors;
 public class RentalMapper {
     private final CarMapper carMapper;
     private final CustomerMapper customerMapper;
+    private final DamagePenaltyMapper damagePenaltyMapper;
 
     public Rental mapToRental(RentalDto rentalDto) {
         return Rental.builder()
@@ -23,6 +28,7 @@ public class RentalMapper {
                 .endDate(rentalDto.getEndDate())
                 .totalCost(rentalDto.getTotalCost())
                 .rentalDuration(rentalDto.getRentalDuration())
+                .damagePenalty(damagePenaltyMapper.mapToDamagePenalty(rentalDto.getDamagePenalty()))
                 .build();
     }
 
@@ -35,6 +41,7 @@ public class RentalMapper {
                 .endDate(rental.getEndDate())
                 .totalCost(rental.getTotalCost())
                 .rentalDuration(rental.getRentalDuration())
+                .damagePenalty(damagePenaltyMapper.mapToDamagePenaltyDto(rental.getDamagePenalty()))
                 .build();
     }
 

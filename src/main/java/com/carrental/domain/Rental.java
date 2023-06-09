@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -39,4 +40,8 @@ public class Rental {
     @Column(name = "TOTAL_COST", nullable = false)
     private BigDecimal totalCost;
     private Integer rentalDuration;
+
+    @OneToOne(mappedBy = "rental")
+    @JoinColumn(name = "DAMAGE_PENALTY")
+    private DamagePenalty damagePenalty;
 }

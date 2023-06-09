@@ -1,7 +1,6 @@
 package com.carrental.controller;
 
-import com.carrental.controller.RentalController;
-import com.carrental.controller.exceptions.RentalNotFoundException;
+import com.carrental.domain.dto.DamagePenaltyDto;
 import com.carrental.domain.dto.RentalDto;
 import com.carrental.service.RentalService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -67,6 +66,34 @@ class RentalControllerTest {
                         .content(new ObjectMapper().writeValueAsString(rentalDto)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(rentalDto.getId()));
+    }
+
+    @Test
+    void testAddDamageToRental() throws Exception {
+        Long rentalId = 1L;
+        DamagePenaltyDto damagePenaltyDto = new DamagePenaltyDto();
+        RentalDto updatedRentalDto = new RentalDto();
+
+        when(rentalService.addDamageToRental(rentalId, damagePenaltyDto)).thenReturn(updatedRentalDto);
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/v1/rentals/{rentalId}/add-damage", rentalId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new ObjectMapper().writeValueAsString(damagePenaltyDto)))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(updatedRentalDto.getId()));
+    }
+
+    @Test
+    void testRemoveDamageFromRental() throws Exception {
+        Long rentalId = 1L;
+        RentalDto updatedRentalDto = new RentalDto();
+
+        when(rentalService.removeDamageFromRental(rentalId)).thenReturn(updatedRentalDto);
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/v1/rentals/{rentalId}/remove-damage", rentalId)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(updatedRentalDto.getId()));
     }
 
     @Test

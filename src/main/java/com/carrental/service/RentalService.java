@@ -2,79 +2,49 @@ package com.carrental.service;
 
 import com.carrental.controller.exceptions.CustomerNotFoundException;
 import com.carrental.controller.exceptions.RentalNotFoundException;
-import com.carrental.domain.Car;
-import com.carrental.domain.Customer;
-import com.carrental.domain.Rental;
-import com.carrental.domain.dto.CustomerDto;
+import com.carrental.domain.dto.DamagePenaltyDto;
 import com.carrental.domain.dto.RentalDto;
-import com.carrental.mapper.CustomerMapper;
-import com.carrental.mapper.RentalMapper;
-import com.carrental.repository.CarRepository;
-import com.carrental.repository.RentalRepository;
+import com.carrental.facade.RentalFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class RentalService {
-    private final RentalRepository rentalRepository;
-    private final CarRepository carRepository;
-    private final RentalMapper rentalMapper;
-    private final CustomerService customerService;
-    private final CustomerMapper customerMapper;
+
+    private final RentalFacade rentalFacade;
 
     public List<RentalDto> getRentalList() {
-        List<Rental> rentalList = rentalRepository.findAll();
-        return rentalMapper.mapToRentalDtoList(rentalList);
+        return rentalFacade.getRentalList();
     }
 
     public RentalDto getRentalById(Long rentalId) throws RentalNotFoundException {
-        Rental rental = rentalRepository.findById(rentalId).orElseThrow(RentalNotFoundException::new);
-        return rentalMapper.mapToRentalDto(rental);
+        return rentalFacade.getRentalById(rentalId);
     }
 
     public List<RentalDto> getRentalsByCustomer(Long customerId) throws CustomerNotFoundException {
-        CustomerDto customerDto = customerService.getCustomerById(customerId);
-        List<Rental> rentals = rentalRepository.findByCustomer(customerMapper.mapToCustomer(customerDto));
-        return rentalMapper.mapToRentalDtoList(rentals);
+        return rentalFacade.getRentalsByCustomer(customerId);
     }
 
     public RentalDto updateRental(RentalDto rentalDto) throws RentalNotFoundException {
-        Rental existingRental = rentalRepository.findById(rentalDto.getId())
-                .orElseThrow(RentalNotFoundException::new);
-
-        existingRental.setStartDate(rentalDto.getStartDate());
-        existingRental.setEndDate(rentalDto.getEndDate());
-        existingRental.setTotalCost(rentalDto.getTotalCost());
-
-        Rental updatedRental = rentalRepository.save(existingRental);
-        return rentalMapper.mapToRentalDto(updatedRental);
+        return rentalFacade.updateRental(rentalDto);
     }
 
     public RentalDto saveRental(RentalDto rentalDto) {
-        Rental rental = rentalMapper.mapToRental(rentalDto);
-        Car car = rental.getCar();
-        car.setAvailable(false);
+        return rentalFacade.saveRental(rentalDto);
+    }
 
-        Integer rentalDuration = rentalDto.getRentalDuration();
-        BigDecimal costPerDay = car.getCostPerDay();
-        BigDecimal totalCost = costPerDay.multiply(BigDecimal.valueOf(rentalDuration));
-        rental.setTotalCost(totalCost);
-        rental.setRentalDuration(rentalDuration);
+    public RentalDto addDamageToRental(Long rentalId, DamagePenaltyDto damagePenaltyDto) throws RentalNotFoundException {
+        return rentalFacade.addDamageToRental(rentalId, damagePenaltyDto);
+    }
 
-        carRepository.save(car);
-        Rental savedRental = rentalRepository.save(rental);
-        return rentalMapper.mapToRentalDto(savedRental);
+    public RentalDto removeDamageFromRental(Long rentalId) throws RentalNotFoundException {
+        return rentalFacade.removeDamageFromRental(rentalId);
     }
 
     public void deleteRentalById(Long rentalId) throws RentalNotFoundException {
-        Rental rental = rentalRepository.findById(rentalId).orElseThrow(RentalNotFoundException::new);
-        Car car = rental.getCar();
-        car.setAvailable(true);
-        carRepository.save(car);
-        rentalRepository.delete(rental);
+        rentalFacade.deleteRentalById(rentalId);
     }
 }

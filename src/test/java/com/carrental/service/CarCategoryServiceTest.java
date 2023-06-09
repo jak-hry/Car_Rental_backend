@@ -1,86 +1,57 @@
 package com.carrental.service;
 
-import com.carrental.domain.Car;
 import com.carrental.domain.CarCategory;
 import com.carrental.domain.dto.CarCategoryDto;
 import com.carrental.domain.dto.CarDto;
-import com.carrental.mapper.CarMapper;
-import com.carrental.repository.CarRepository;
+import com.carrental.facade.CarCategoryFacade;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.mockito.MockitoAnnotations;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.when;
-
-@SpringBootTest
-class CarCategoryServiceTest {
+public class CarCategoryServiceTest {
 
     @Mock
-    private CarRepository carRepository;
+    private CarCategoryFacade categoryFacade;
 
-    @Mock
-    private CarMapper carMapper;
+    @InjectMocks
+    private CarCategoryService carCategoryService;
+
+    @BeforeEach
+    public void setUp() {
+        MockitoAnnotations.openMocks(this);
+    }
 
     @Test
-    void shouldGetCarsByCategory() {
+    public void getCarsByCategory() {
         // Given
-        CarCategoryService carCategoryService = new CarCategoryService(carRepository, carMapper);
-        CarCategory category = CarCategory.SEDAN;
-
-        Car car1 = new Car();
-        car1.setId(1L);
-        car1.setModel("Toyota Camry");
-        car1.setCategory(category);
-
-        Car car2 = new Car();
-        car2.setId(2L);
-        car2.setModel("Honda Civic");
-        car2.setCategory(category);
-
-        List<Car> cars = Arrays.asList(car1, car2);
-
-        CarDto carDto1 = new CarDto();
-        carDto1.setId(1L);
-        carDto1.setModel("Toyota Camry");
-
-        CarDto carDto2 = new CarDto();
-        carDto2.setId(2L);
-        carDto2.setModel("Honda Civic");
-
-        when(carRepository.findByCategory(category)).thenReturn(cars);
-        when(carMapper.mapToCarDtoList(cars)).thenReturn(Arrays.asList(carDto1, carDto2));
+        CarCategory category = CarCategory.SPORTS_CAR;
+        List<CarDto> expectedCarDtoList = new ArrayList<>();
+        when(categoryFacade.getCarsByCategory(category)).thenReturn(expectedCarDtoList);
 
         // When
         List<CarDto> result = carCategoryService.getCarsByCategory(category);
 
         // Then
-        assertEquals(2, result.size());
-        assertEquals(carDto1.getId(), result.get(0).getId());
-        assertEquals(carDto1.getModel(), result.get(0).getModel());
-        assertEquals(carDto2.getId(), result.get(1).getId());
-        assertEquals(carDto2.getModel(), result.get(1).getModel());
+        assertEquals(expectedCarDtoList, result);
     }
 
     @Test
-    void shouldGetAllCategories() {
+    public void getAllCategories() {
         // Given
-        CarCategoryService carCategoryService = new CarCategoryService(carRepository, carMapper);
+        List<CarCategoryDto> expectedCategoryDtoList = new ArrayList<>();
+        when(categoryFacade.getAllCategories()).thenReturn(expectedCategoryDtoList);
 
         // When
         List<CarCategoryDto> result = carCategoryService.getAllCategories();
 
         // Then
-        List<CarCategoryDto> expected = Arrays.stream(CarCategory.values())
-                .map(category -> new CarCategoryDto(category.ordinal(), category.name())).toList();
-
-        assertEquals(expected.size(), result.size());
-        for (int i = 0; i < expected.size(); i++) {
-            assertEquals(expected.get(i).getId(), result.get(i).getId());
-            assertEquals(expected.get(i).getName(), result.get(i).getName());
-        }
+        assertEquals(expectedCategoryDtoList, result);
     }
 }

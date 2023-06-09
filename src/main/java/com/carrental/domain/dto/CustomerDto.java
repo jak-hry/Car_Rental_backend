@@ -16,4 +16,10 @@ public class CustomerDto {
     private String address;
     private String phoneNumber;
     private String email;
+
+    public CustomerDto(Long id, String firstName, String lastName) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
 }

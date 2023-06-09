@@ -35,9 +35,18 @@ public class Car {
     private TransmissionType transmissionType;
     @Column(name = "COST_PER_DAY")
     private BigDecimal costPerDay;
-
     @OneToMany(mappedBy = "car")
     private List<Rental> rentals;
+    private boolean damaged;
+    public Car(Long id, String model, boolean available, CarCategory category, TransmissionType transmissionType, BigDecimal costPerDay, boolean damaged) {
+        this.id = id;
+        this.model = model;
+        this.available = available;
+        this.category = category;
+        this.transmissionType = transmissionType;
+        this.costPerDay = costPerDay;
+        this.damaged = damaged;
+    }
 
     public Car(Long id, String model, boolean available, CarCategory category, TransmissionType transmissionType, BigDecimal costPerDay) {
         this.id = id;

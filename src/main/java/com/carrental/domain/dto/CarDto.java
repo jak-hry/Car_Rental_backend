@@ -20,6 +20,7 @@ public class CarDto {
     private TransmissionTypeDto transmissionType;
     private BigDecimal costPerDay;
     private List<RentalDto> rentals;
+    private boolean damaged;
 
     public CarDto(Long id, String model, boolean available) {
         this.id = id;

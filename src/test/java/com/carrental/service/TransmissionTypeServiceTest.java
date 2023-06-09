@@ -1,88 +1,56 @@
 package com.carrental.service;
 
-import com.carrental.domain.Car;
-import com.carrental.domain.TransmissionType;
 import com.carrental.domain.dto.CarDto;
 import com.carrental.domain.dto.TransmissionTypeDto;
-import com.carrental.mapper.CarMapper;
-import com.carrental.mapper.TransmissionTypeMapper;
-import com.carrental.repository.CarRepository;
+import com.carrental.facade.TransmissionTypeFacade;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.mockito.MockitoAnnotations;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.when;
-
-@SpringBootTest
-class TransmissionTypeServiceTest {
+public class TransmissionTypeServiceTest {
 
     @Mock
-    private CarRepository carRepository;
+    private TransmissionTypeFacade transmissionTypeFacade;
 
-    @Mock
-    private CarMapper carMapper;
+    @InjectMocks
+    private TransmissionTypeService transmissionTypeService;
 
-    @Mock
-    private TransmissionTypeMapper transmissionTypeMapper;
+    @BeforeEach
+    public void setUp() {
+        MockitoAnnotations.openMocks(this);
+    }
 
     @Test
-    void shouldGetAllTransmissionTypes() {
+    public void getAllTransmissionTypes() {
         // Given
-        TransmissionTypeService transmissionTypeService = new TransmissionTypeService(
-                carRepository, carMapper, transmissionTypeMapper);
-
-        List<TransmissionTypeDto> expected = Arrays.asList(
-                new TransmissionTypeDto("AUTOMATIC"), new TransmissionTypeDto("MANUAL"));
-
-        when(transmissionTypeMapper.toDto(TransmissionType.AUTOMATIC))
-                .thenReturn(new TransmissionTypeDto("AUTOMATIC"));
-        when(transmissionTypeMapper.toDto(TransmissionType.MANUAL))
-                .thenReturn(new TransmissionTypeDto("MANUAL"));
+        List<TransmissionTypeDto> expectedTransmissionTypeDtoList = new ArrayList<>();
+        when(transmissionTypeFacade.getAllTransmissionTypes()).thenReturn(expectedTransmissionTypeDtoList);
 
         // When
         List<TransmissionTypeDto> result = transmissionTypeService.getAllTransmissionTypes();
 
         // Then
-        assertEquals(expected.size(), result.size());
-        for (int i = 0; i < expected.size(); i++) assertEquals(expected.get(i).getName(), result.get(i).getName());
+        assertEquals(expectedTransmissionTypeDtoList, result);
     }
 
     @Test
-    void shouldGetCarsByTransmissionType() {
+    public void getCarsByTransmissionType() {
         // Given
-        TransmissionTypeService transmissionTypeService = new TransmissionTypeService(
-                carRepository, carMapper, transmissionTypeMapper);
-
-        TransmissionTypeDto transmissionTypeDto = new TransmissionTypeDto("AUTOMATIC");
-        TransmissionType transmissionType = TransmissionType.AUTOMATIC;
-
-        Car car1 = new Car();
-        car1.setId(1L);
-        car1.setModel("Toyota Camry");
-        car1.setTransmissionType(transmissionType);
-
-        CarDto carDto1 = new CarDto();
-        carDto1.setId(1L);
-        carDto1.setModel("Toyota Camry");
-
-        List<Car> cars = Collections.singletonList(car1);
-        List<CarDto> expected = Collections.singletonList(carDto1);
-
-        when(transmissionTypeMapper.toEntity(transmissionTypeDto)).thenReturn(transmissionType);
-        when(carRepository.findByTransmissionType(transmissionType)).thenReturn(cars);
-        when(carMapper.mapToCarDtoList(cars)).thenReturn(expected);
+        TransmissionTypeDto transmissionTypeDto = new TransmissionTypeDto();
+        List<CarDto> expectedCarDtoList = new ArrayList<>();
+        when(transmissionTypeFacade.getCarsByTransmissionType(transmissionTypeDto)).thenReturn(expectedCarDtoList);
 
         // When
         List<CarDto> result = transmissionTypeService.getCarsByTransmissionType(transmissionTypeDto);
 
         // Then
-        assertEquals(expected.size(), result.size());
-        assertEquals(expected.get(0).getId(), result.get(0).getId());
-        assertEquals(expected.get(0).getModel(), result.get(0).getModel());
+        assertEquals(expectedCarDtoList, result);
     }
 }

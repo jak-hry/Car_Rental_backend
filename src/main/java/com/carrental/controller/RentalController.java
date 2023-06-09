@@ -2,6 +2,7 @@ package com.carrental.controller;
 
 import com.carrental.controller.exceptions.CustomerNotFoundException;
 import com.carrental.controller.exceptions.RentalNotFoundException;
+import com.carrental.domain.dto.DamagePenaltyDto;
 import com.carrental.domain.dto.RentalDto;
 import com.carrental.service.RentalService;
 import lombok.RequiredArgsConstructor;
@@ -39,6 +40,18 @@ public class RentalController {
     public ResponseEntity<RentalDto> createRental(@RequestBody RentalDto rentalDto) {
         RentalDto createdRentalDto = rentalService.saveRental(rentalDto);
         return ResponseEntity.ok(createdRentalDto);
+    }
+
+    @PostMapping("/{rentalId}/add-damage")
+    public ResponseEntity<RentalDto> addDamageToRental(@PathVariable Long rentalId, @RequestBody DamagePenaltyDto damagePenaltyDto) throws RentalNotFoundException {
+        RentalDto updatedRental = rentalService.addDamageToRental(rentalId, damagePenaltyDto);
+        return ResponseEntity.ok(updatedRental);
+    }
+
+    @PostMapping("/{rentalId}/remove-damage")
+    public ResponseEntity<RentalDto> removeDamageFromRental(@PathVariable Long rentalId) throws RentalNotFoundException {
+        RentalDto updatedRental = rentalService.removeDamageFromRental(rentalId);
+        return ResponseEntity.ok(updatedRental);
     }
 
     @PutMapping("/{id}")

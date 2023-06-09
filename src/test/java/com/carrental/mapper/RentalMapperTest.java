@@ -25,13 +25,15 @@ public class RentalMapperTest {
     private CarMapper carMapper;
     @Mock
     private CustomerMapper customerMapper;
+    @Mock
+    private DamagePenaltyMapper damagePenaltyMapper;
 
     private RentalMapper rentalMapper;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        rentalMapper = new RentalMapper(carMapper, customerMapper);
+        rentalMapper = new RentalMapper(carMapper, customerMapper, damagePenaltyMapper);
     }
 
     @Test

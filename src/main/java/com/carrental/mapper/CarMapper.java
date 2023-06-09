@@ -23,6 +23,7 @@ public class CarMapper {
                 .category(categoryMapper.mapToCarCategory(carDto.getCategory()))
                 .transmissionType(transmissionTypeMapper.toEntity(carDto.getTransmissionType()))
                 .costPerDay(carDto.getCostPerDay())
+                .damaged(carDto.isDamaged())
                 .build();
     }
 
@@ -34,6 +35,7 @@ public class CarMapper {
                 .category(categoryMapper.mapToCarCategoryDto(car.getCategory()))
                 .transmissionType(transmissionTypeMapper.toDto(car.getTransmissionType()))
                 .costPerDay(car.getCostPerDay())
+                .damaged(car.isDamaged())
                 .build();
     }
 

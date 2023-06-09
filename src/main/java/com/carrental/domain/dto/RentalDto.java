@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -20,4 +21,5 @@ public class RentalDto {
     private LocalDateTime endDate;
     private BigDecimal totalCost;
     private Integer rentalDuration;
+    private DamagePenaltyDto damagePenalty;
 }

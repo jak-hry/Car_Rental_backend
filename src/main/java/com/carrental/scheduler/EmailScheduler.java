@@ -19,7 +19,7 @@ public class EmailScheduler {
     private final CarRepository carRepository;
     private final AdminConfig adminConfig;
 
-//    @Scheduled(fixedDelay = 10000)
+    @Scheduled(fixedDelay = 10000)
     public void sendInformationEmail() {
         long rentedCarsCount = rentalRepository.count();
         long availableCarsCount = carRepository.count() - rentedCarsCount;
